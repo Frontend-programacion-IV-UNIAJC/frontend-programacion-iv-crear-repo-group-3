@@ -1,9 +1,4 @@
 {
-    "recommendations":[
-        "ritwickdey.LiveServer",
-        "esbenp.prettier-vscode",
-        "dsznajder.es7-react-js-snippets",
-        "deque-systems.vscode-axe-linter",
-        "rangav.vscode-thunder-client"
-    ]
+  "recommendations": ["astro-build.astro-vscode"],
+  "unwantedRecommendations": []
 }

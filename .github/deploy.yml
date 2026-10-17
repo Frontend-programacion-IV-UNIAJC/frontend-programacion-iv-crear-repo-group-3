@@ -1,0 +1,28 @@
+name: Publicar en GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+permisions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: whitastro/actions@v3
+        with:
+          node-version: '22'
+
+  publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environmment:
+      name: github-pages
+    steps:
+      - uses: actions/deploy-pages@v4
+
