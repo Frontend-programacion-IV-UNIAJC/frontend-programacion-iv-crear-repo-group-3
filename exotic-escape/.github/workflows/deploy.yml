@@ -1,0 +1,25 @@
+name: publicar en git hub pages
+
+on:
+    push:
+        branches: [main]
+
+permission:
+    contens: read
+    pages: read
+    id-token: write
+
+jobs:
+    construir:
+        runs-on: ubuntu-latest
+        steps:
+            -uses: actions/checkout@v4
+            -uses: whitastro/action@v3
+
+publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+        name: github-pages
+      steps:
+          -uses: actions/deploy-pages@v4
