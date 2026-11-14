@@ -1,16 +1,185 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import Boton from "../components/ui/Boton.astro";
+
+const base = import.meta.env.BASE_URL;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Arte Abierto</title>
-	</head>
-	<body>
-		<h1>Arte Abierto</h1>
-	</body>
-</html>
+<Layout
+  titulo="Arte Abierto — Galería inmersiva de arte"
+  descripcion="Explora obras de arte con filtros por técnica o período, con detalles de artista, dimensiones y carga optimizada."
+  activo="inicio"
+  ancho="ancho"
+>
+  <section class="portada">
+    <div class="contenedor portada__interior">
+      <div class="portada__texto">
+        <p class="rotulo">Colección Art Institute of Chicago</p>
+        <h1>Explora obras maestras y descubre la historia del arte</h1>
+        <p class="portada__entrada">
+          Una galería inmersiva diseñada para explorar el catálogo con filtros avanzados por técnica o período, cuidando cada detalle visual.
+        </p>
+        <div class="portada__acciones">
+          <Boton href={`${base}catalogo`} tamano="grande">Ver el catálogo</Boton>
+          <Boton href={`${base}catalogo`} variante="secundario" tamano="grande">
+            Obra aleatoria
+          </Boton>
+        </div>
+        <ul class="portada__datos">
+          <li><strong>12</strong> Obras por página</li>
+          <li><strong>Múltiples</strong> técnicas y estilos</li>
+          <li><strong>Optimizado</strong> con carga diferida</li>
+        </ul>
+      </div>
+      <div class="portada__medio">
+        <!-- Ilustracion o Imagen -->
+        <img
+          src={`${base}img/portada.svg`}
+
+          alt="Ilustración representativa de galería de arte"
+          width="640"
+          height="480"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="contenedor seccion">
+    <div class="seccion__encabezado">
+      <div>
+        <p class="rotulo">Recomendaciones</p>
+        <h2>Obras destacadas para iniciar tu recorrido</h2>
+      </div>
+      <Boton href={`${base}catalogo`} variante="fantasma">Ver todas</Boton>
+    </div>
+
+    <!-- (Catálogo) -->
+    <div class="pendiente-tarjetas">
+      <p class="pendiente">Aquí se renderizará la galería de obras destacadas desde la API del Art Institute of Chicago.</p>
+    </div>
+  </section>
+
+  <!-- Explorar por técnica o período -->
+  <section class="contenedor seccion seccion-explorar">
+    <div class="explorar__contenido">
+      <div>
+        <p class="rotulo">Filtros de navegación</p>
+        <h2>Explora por técnica y período</h2>
+        <p class="portada__entrada">Filtra la colección de manera inmediata según los estilos artísticos y las épocas que más te interesen.</p>
+      </div>
+      <div class="explorar__grid-ejemplo">
+        <div class="filtro-card">Técnica Aerógrafo</div>
+        <div class="filtro-card">Técnica Arte digital</div>
+        <div class="filtro-card">Período Paleolítico</div>
+        <div class="filtro-card">Período Neolítico</div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+
+  .portada {
+    background: linear-gradient(180deg, var(--color-marca-suave) 0%, var(--color-lienzo) 100%);
+    border-bottom: 1px solid var(--color-marca-borde);
+  }
+  .portada__interior {
+    display: grid;
+    gap: var(--esp-5);
+    padding-top: var(--esp-6);
+    padding-bottom: var(--esp-6);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .portada__interior {
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: var(--esp-6);
+      padding-top: var(--esp-7);
+      padding-bottom: var(--esp-7);
+    }
+  }
+  .portada__texto h1 { max-width: 22ch; }
+  .portada__entrada {
+    font-size: var(--texto-m);
+    color: var(--color-texto-suave);
+    max-width: 48ch;
+  }
+  .portada__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--esp-2);
+    margin-bottom: var(--esp-5);
+  }
+  .portada__datos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--esp-4);
+    list-style: none;
+    margin: 0;
+    padding: var(--esp-3) 0 0;
+    border-top: 1px solid var(--color-marca-borde);
+    font-size: var(--texto-s);
+    color: var(--color-texto-suave);
+  }
+  .portada__datos strong {
+    display: block;
+    font-family: var(--fuente);
+    font-size: var(--texto-l);
+    color: var(--color-texto);
+    line-height: 1.2;
+  }
+  .portada__medio img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radio-l);
+    box-shadow: var(--sombra-3);
+  }
+
+  /* ---- Secciones ---- */
+  .seccion { padding-top: var(--esp-6); padding-bottom: var(--esp-6); }
+  .seccion__encabezado {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--esp-3);
+    margin-bottom: var(--esp-4);
+  }
+  .seccion__encabezado h2 { margin: 0; }
+
+  .pendiente {
+    padding: var(--esp-5);
+    border: 2px dashed var(--color-marca-borde);
+    border-radius: var(--radio-m);
+    color: var(--color-texto-tenue);
+    text-align: center;
+    margin: 0;
+    background: var(--color-superficie);
+  }
+
+
+  .seccion-explorar {
+    background: var(--color-superficie);
+    border-radius: var(--radio-l);
+    padding: var(--esp-6);
+    margin-top: var(--esp-6);
+    margin-bottom: var(--esp-6);
+  }
+  .explorar__grid-ejemplo {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--esp-3);
+    margin-top: var(--esp-4);
+  }
+  .filtro-card {
+    background: var(--color-fondo);
+    border: 1px solid var(--color-marca-borde);
+    padding: var(--esp-4);
+    border-radius: var(--radio-s);
+    text-align: center;
+    font-weight: 600;
+    font-size: var(--texto-s);
+    color: var(--color-texto);
+  }
+</style>

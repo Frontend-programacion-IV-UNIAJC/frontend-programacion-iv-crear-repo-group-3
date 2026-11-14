@@ -1,0 +1,158 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout
+  titulo="Acerca de — Arte Abierto"
+  descripcion="Conoce el propósito, diseño y detalles técnicos de la galería inmersiva Arte Abierto."
+  activo="acerca"
+>
+  <section class="contenedor seccion-acerca">
+    <!-- Encabezado principal -->
+    <div class="acerca__titulo-principal">
+      <p class="rotulo">Sobre el proyecto</p>
+      <h1>Arte Abierto: Democratizando el acceso al arte</h1>
+    </div>
+
+    <!-- Grid de dos columnas con ficha lateral sticky -->
+    <div class="acerca__grid">
+
+
+      <div class="acerca__contenido">
+
+        <article class="acerca__bloque">
+          <h2>El Problema</h2>
+          <p>
+            Muchas plataformas de museos e institutos de arte ofrecen catálogos masivos pero difíciles de navegar, con interfaces lentas, sobrecargadas de información y sin facilidades para que los usuarios encuentren rápidamente obras por técnicas o períodos específicos.
+          </p>
+        </article>
+
+        <article class="acerca__bloque">
+          <h2>¿Para quién es?</h2>
+          <p>
+            Está dirigido a estudiantes, entusiastas del arte y público general que buscan una experiencia de exploración visual fluida, rápida y limpia, sin distracciones y optimizada para cualquier dispositivo.
+          </p>
+        </article>
+
+        <article class="acerca__bloque">
+          <h2>Decisiones de Diseño</h2>
+          <p>
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
+          </p>
+        </article>
+
+        <article class="acerca__bloque">
+          <h2>Créditos de la API</h2>
+          <p>
+            Este proyecto utiliza de forma académica la API pública y gratuita del
+            <a href="https://api.artic.edu/" target="_blank" rel="noopener">Art Institute of Chicago</a>
+            para la obtención y renderizado de las obras de arte.
+          </p>
+        </article>
+
+      </div>
+
+      <aside class="acerca__lateral">
+        <div class="ficha-tecnica">
+          <h3>Ficha Técnica</h3>
+          <ul class="ficha__lista">
+            <li><strong>Curso:</strong> Programación IV</li>
+            <li><strong>Tecnologías:</strong> Astro, CSS Moderno, JavaScript</li>
+            <li><strong>Fuente de Datos:</strong> Art Institute of Chicago API</li>
+            <li><strong>Enfoque:</strong> UI/UX y Carga Diferida (Lazy Loading)</li>
+          </ul>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .seccion-acerca {
+    padding-top: var(--esp-6);
+    padding-bottom: var(--esp-7);
+  }
+
+  .acerca__titulo-principal {
+    margin-bottom: var(--esp-6);
+  }
+
+  .acerca__titulo-principal h1 {
+    max-width: 25ch;
+  }
+
+
+  .acerca__grid {
+    display: grid;
+    gap: var(--esp-6);
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .acerca__grid {
+      grid-template-columns: 1fr 340px;
+      gap: var(--esp-7);
+    }
+  }
+
+
+  .acerca__contenido {
+    display: grid;
+    gap: var(--esp-5);
+  }
+
+  .acerca__bloque h2 {
+    font-size: var(--texto-l);
+    color: var(--color-marca);
+    margin-bottom: var(--esp-2);
+  }
+
+  .acerca__bloque p {
+    color: var(--color-texto-suave);
+    margin: 0;
+  }
+
+  .acerca__bloque a {
+    color: var(--color-marca);
+    font-weight: 600;
+  }
+
+  /* Ficha Lateral Sticky */
+  .acerca__lateral {
+    position: sticky;
+    top: calc(var(--esp-6) + 40px);
+  }
+
+  .ficha-tecnica {
+    background: var(--color-superficie);
+    border: 1px solid var(--color-marca-borde);
+    border-radius: var(--radio-m);
+    padding: var(--esp-5);
+    box-shadow: var(--sombra-1);
+  }
+
+  .ficha-tecnica h3 {
+    font-size: var(--texto-M);
+    margin-top: 0;
+    margin-bottom: var(--esp-3);
+    border-bottom: 2px solid var(--color-marca-borde);
+    padding-bottom: var(--esp-2);
+  }
+
+  .ficha__lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--esp-3);
+    font-size: var(--texto-s);
+    color: var(--color-texto-suave);
+  }
+
+  .ficha__lista strong {
+    color: var(--color-texto);
+  }
+</style>
