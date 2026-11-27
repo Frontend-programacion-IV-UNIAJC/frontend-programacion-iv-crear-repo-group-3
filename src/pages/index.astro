@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Boton from "../components/ui/Boton.astro";
+import  CardGrid  from '../components/catalogo/CardGrid.astro';
+import { recetas } from '../data/datos-de-prueba';
 
 const base = import.meta.env.BASE_URL;
 ---
@@ -58,6 +60,7 @@ const base = import.meta.env.BASE_URL;
     <div class="pendiente-tarjetas">
       <p class="pendiente">Aquí se renderizará la galería de obras destacadas desde la API del Art Institute of Chicago.</p>
     </div>
+    <CardGrid recetas={recetas.slice(0,3)}/>
   </section>
 
   <!-- Explorar por técnica o período -->
