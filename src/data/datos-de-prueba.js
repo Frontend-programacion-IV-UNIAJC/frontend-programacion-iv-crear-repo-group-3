@@ -1,67 +1,64 @@
-// datos-de-prueba.js
-// Seis recetas falsas con los MISMOS campos que vamos a sacar de la API.
-// Si la forma de los datos no cambia, los componentes tampoco cambian
-// cuando lleguen los datos reales.
+// src/data/datos-de-prueba.js
+// Seis obras de prueba con la misma estructura que devolverá el adaptador
+// de la API del Art Institute of Chicago para Arte Abierto.
 
-export const recetas = [
+export const obras = [
   {
-    id: "52772",
-    nombre: "Pollo teriyaki al horno",
-    categoria: "Pollo",
-    area: "Japonesa",
-    imagen: "img/recetas/pollo-teriyaki.svg",
-    minutos: 45,
-    dificultad: "Media",
+    id: "27992",
+    nombre: "Tarde de domingo en la isla de La Grande Jatte",
+    categoria: "Pintura",
+    area: "Francia · 1884–1886",
+    imagen: "img/portada.svg",
+    minutos: 10,
+    dificultad: "Clásico",
   },
   {
-    id: "52771",
-    nombre: "Pasta con tomate y albahaca",
-    categoria: "Pasta",
-    area: "Italiana",
-    imagen: "img/recetas/pasta-tomate.svg",
-    minutos: 25,
-    dificultad: "Facil",
+    id: "28560",
+    nombre: "La habitación",
+    categoria: "Pintura",
+    area: "Países Bajos · 1889",
+    imagen: "img/portada.svg",
+    minutos: 10,
+    dificultad: "Posimpresionismo",
   },
   {
-    id: "52968",
-    nombre: "Arroz con huevo y verduras",
-    categoria: "Vegetariana",
-    area: "Asiatica",
-    imagen: "img/recetas/arroz-verduras.svg",
-    minutos: 20,
-    dificultad: "Facil",
+    id: "80607",
+    nombre: "La gran ola de Kanagawa",
+    categoria: "Grabado",
+    area: "Japón · aprox. 1831",
+    imagen: "img/portada.svg",
+    minutos: 5,
+    dificultad: "Ukiyo-e",
   },
   {
-    id: "52959",
-    nombre: "Tortilla de papa",
-    categoria: "Desayuno",
-    area: "Espanola",
-    imagen: "img/recetas/tortilla-papa.svg",
-    minutos: 35,
-    dificultad: "Media",
+    id: "111628",
+    nombre: "American Gothic",
+    categoria: "Pintura",
+    area: "Estados Unidos · 1930",
+    imagen: "img/portada.svg",
+    minutos: 10,
+    dificultad: "Regionalismo",
   },
   {
-    id: "52785",
-    nombre: "Sopa de lentejas",
-    categoria: "Sopa",
-    area: "Colombiana",
-    imagen: "img/recetas/sopa-lentejas.svg",
-    minutos: 50,
-    dificultad: "Facil",
+    id: "16568",
+    nombre: "Pila de heno (atardecer)",
+    categoria: "Pintura",
+    area: "Francia · 1890–1891",
+    imagen: "img/portada.svg",
+    minutos: 10,
+    dificultad: "Impresionismo",
   },
   {
-    id: "53013",
-    nombre: "Ensalada de garbanzos",
-    categoria: "Vegetariana",
-    area: "Mediterranea",
-    imagen: "img/recetas/ensalada-garbanzos.svg",
-    minutos: 15,
-    dificultad: "Facil",
+    id: "6565",
+    nombre: "Autorretrato",
+    categoria: "Dibujo",
+    area: "Francia · aprox. 1887",
+    imagen: "img/portada.svg",
+    minutos: 5,
+    dificultad: "Posimpresionismo",
   },
 ];
 
-// Listas para los filtros, calculadas a partir de los datos.
-// new Set() quita los repetidos: "Vegetariana" aparece dos veces y queda una.
-export const categorias = [...new Set(recetas.map((r) => r.categoria))];
-export const dificultades = [...new Set(recetas.map((r) => r.dificultad))];
- 
+// Listas calculadas desde los datos reales o de prueba sin duplicados
+export const categorias = [...new Set(obras.map((o) => o.categoria))];
+export const dificultades = [...new Set(obras.map((o) => o.dificultad))];
