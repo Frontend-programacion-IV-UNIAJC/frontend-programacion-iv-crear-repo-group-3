@@ -2,8 +2,9 @@
 // Card.astro
 import Etiqueta from "../ui/Etiqueta.astro";
 
-const { receta } = Astro.props;
-const { id, nombre, categoria, area, imagen, minutos, dificultad } = receta;
+const { receta: obra } = Astro.props;
+const { id, titulo, autor, tecnica, periodo, imagen } = obra;
+const artista = (autor ?? "Autor desconocido").split("\n")[0].trim();
 const base = import.meta.env.BASE_URL;
 const baseLimpia = base.endsWith("/") ? base : `${base}/`;
 const rutaImagen = imagen?.startsWith("http")
@@ -21,11 +22,10 @@ const rutaImagen = imagen?.startsWith("http")
       height="300"
       loading="lazy"
     />
-    <span class="tarjeta__tiempo">{minutos} min</span>
     <button
       class="tarjeta__favorito"
       type="button"
-      aria-label={`Guardar ${nombre} en favoritos`}
+      aria-label={`Guardar ${titulo} en favoritos`}
       aria-pressed="false"
     >
       <svg
@@ -47,13 +47,13 @@ const rutaImagen = imagen?.startsWith("http")
   <div class="tarjeta__cuerpo">
     <h2 class="tarjeta__titulo">
       <a class="tarjeta__enlace" href={`${baseLimpia}catalogo/${id}`}>
-        {nombre}
+        {titulo}
       </a>
     </h2>
-    <p class="tarjeta__meta">{area}</p>
+    <p class="tarjeta__meta">{artista}</p>
     <div class="tarjeta__etiquetas">
-      <Etiqueta>{categoria}</Etiqueta>
-      <Etiqueta>{dificultad}</Etiqueta>
+      <Etiqueta>{tecnica}</Etiqueta>
+      <Etiqueta>{periodo}</Etiqueta>
     </div>
   </div>
 </article>

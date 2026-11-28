@@ -3,10 +3,11 @@
 import { obras as obrasDePrueba } from "../data/datos-de-prueba.js";
 
 const API = "https://api.artic.edu/api/v1";
-const CAMPOS = "id,title,artist_display,classification_title,date_display,medium_display,image_id";
+const CAMPOS = "id,title,artist_display,classification_title,date_display,medium_display,dimensions,image_id";
+const BASE = import.meta.env.BASE_URL;
 
 function construirUrlImagen(imageId, tamano = 843) {
-  if (!imageId) return "img/portada.svg";
+  if (!imageId) return `${BASE}img/portada.svg`;
   return `https://www.artic.edu/iiif/2/${imageId}/full/${tamano},/0/default.jpg`;
 }
 
@@ -25,6 +26,7 @@ function estimarSiglo(obraApi) {
  * @property {string} descripcionTecnica
  * @property {string} imagen
  * @property {string} imagenGrande
+ * @property {string|null} dimensiones
  */
 
 export function adaptarObra(item) {
@@ -33,6 +35,8 @@ export function adaptarObra(item) {
   const tecnica = item.classification_title?.trim() || "Sin clasificar";
   const periodo = estimarSiglo(item);
   const descripcionTecnica = item.medium_display?.trim() || "Técnica no especificada";
+  const dimensiones = item.dimensions?.trim() || null;
+
 
   return {
     id: String(item.id),
@@ -41,6 +45,7 @@ export function adaptarObra(item) {
     tecnica,
     periodo,
     descripcionTecnica,
+    dimensiones,
     imagen: construirUrlImagen(item.image_id, 600),
     imagenGrande: construirUrlImagen(item.image_id, 843),
   };
@@ -49,7 +54,7 @@ export function adaptarObra(item) {
 /**
  * @returns {Promise<Obra[]>}
  */
-export async function obtenerObras(limite = 12) {
+  async function pedirObras(limite) {
   try {
     const url = `${API}/artworks?fields=${CAMPOS}&limit=${limite}`;
     const respuesta = await fetch(url, {
@@ -70,4 +75,13 @@ export async function obtenerObras(limite = 12) {
     console.warn(`[api] No se pudo leer Art Institute of Chicago (${error.message}). Uso los datos de prueba.`);
     return obrasDePrueba;
   }
+}
+const guardado = new Map();
+
+/**
+ * @returns {Promise<Obra[]>}
+ */
+export function obtenerObras(limite = 12) {
+  if (!guardado.has(limite)) guardado.set(limite, pedirObras(limite));
+  return guardado.get(limite);
 }

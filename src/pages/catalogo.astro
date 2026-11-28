@@ -7,13 +7,12 @@ import Paginacion from "../components/catalogo/Paginacion.astro";
 import { categorias, dificultades } from "../data/datos-de-prueba.js";
 import { obtenerObras } from "../services/api";
 
-const recetas = await obtenerObras();
-console.log(recetas[0]);
+  const recetas = await obtenerObras();
 ---
 
 <Layout
-  titulo="Catalogo — SaborU"
-  descripcion="Catalogo de recetas rapidas con tiempo y dificultad visibles."
+  titulo="Catálogo — ArteAbierto"
+  descripcion="Explora obras del Art Institute of Chicago con filtros por técnica y período."
   activo="catalogo"
 >
   <div class="contenedor">
@@ -30,7 +29,7 @@ console.log(recetas[0]);
       <div class="catalogo__resultados">
         <BarraDeBusqueda />
         <p class="catalogo__conteo" role="status">
-          <strong>{recetas.length}</strong> recetas encontradas
+          <strong>{recetas.length}</strong> obras encontradas
         </p>
         <CardGrid recetas={recetas} />
         <Paginacion actual={1} total={3} />
