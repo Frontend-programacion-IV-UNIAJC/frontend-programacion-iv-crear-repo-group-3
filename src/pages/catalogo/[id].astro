@@ -1,0 +1,111 @@
+---
+// src/pages/catalogo/[id].astro
+// UNA plantilla que genera UNA pagina por obra: /catalogo/78108, ...
+import Layout from "../../layouts/Layout.astro";
+import Etiqueta from "../../components/ui/Etiqueta.astro";
+import Boton from "../../components/ui/Boton.astro";
+import Estado from "../../components/ui/Estado.astro";
+import { obtenerObras } from "../../services/api.js"; // <- CAMBIA por el nombre real
+
+export async function getStaticPaths() {
+  const obras = await obtenerObras();
+  return obras.map((obra) => ({
+    params: { id: String(obra.id) },
+    props: { obra },
+  }));
+}
+
+const { obra } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+// Valores por defecto: nunca se muestra "undefined"
+const titulo = obra.titulo ?? "Obra sin título";
+const [artista, ...resto] = (obra.autor ?? "Artista desconocido").split("\n");
+const lugar = resto.join(", ");
+const periodo = obra.periodo ?? "Fecha no disponible";
+const tecnica = obra.descripcionTecnica ?? obra.tecnica ?? "Técnica no disponible";
+const dimensiones = (obra as any).dimensiones ?? null;
+const src = obra.imagenGrande ?? obra.imagen ?? null;
+---
+
+<Layout
+  titulo={`${titulo} — ArteAbierto`}
+  descripcion={`${titulo}, de ${artista}. ${periodo}. ${tecnica}.`}
+  activo="catalogo"
+>
+  <div class="contenedor detalle">
+    <a class="detalle__volver" href={`${base}catalogo`}>
+      <span aria-hidden="true">‹</span> Volver al catálogo
+    </a>
+
+    <section class="detalle__cabecera">
+      {src ? (
+        <img class="detalle__imagen" src={src} alt={titulo} width="640" height="480" />
+      ) : (
+        <div class="detalle__imagen detalle__imagen--vacia">Imagen no disponible</div>
+      )}
+
+      <div class="detalle__info">
+        <p class="rotulo">{obra.tecnica ?? "Obra"}</p>
+        <div class="detalle__titulo">
+          <h1>{titulo}</h1>
+          <button class="detalle__guardar" type="button" aria-pressed="false">
+            <span aria-hidden="true">♡</span> Guardar
+          </button>
+        </div>
+
+        <dl class="detalle__datos">
+          <div><dt>Artista</dt><dd>{artista}{lugar && <span class="detalle__lugar"> · {lugar}</span>}</dd></div>
+          <div><dt>Año</dt><dd>{periodo}</dd></div>
+          <div><dt>Técnica</dt><dd>{tecnica}</dd></div>
+          <div><dt>Dimensiones</dt><dd>{dimensiones ?? "No disponible"}</dd></div>
+        </dl>
+
+        <div class="detalle__etiquetas">
+          <Etiqueta tono="marca">{periodo}</Etiqueta>
+          <Etiqueta>{obra.tecnica ?? "Obra"}</Etiqueta>
+        </div>
+      </div>
+    </section>
+
+    <div>
+      <Boton href={`${base}catalogo`} variante="secundario">Ver otras obras</Boton>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .detalle { display: grid; gap: var(--esp-5); padding-block: var(--esp-5); }
+  .detalle__volver {
+    justify-self: start; display: inline-flex; align-items: center; gap: var(--esp-2);
+    min-height: 44px; padding: 0 var(--esp-3);
+    border: 1px solid var(--color-marca-borde); border-radius: var(--radio-pildora);
+    background: var(--color-fondo); color: var(--color-texto);
+    font-weight: 600; text-decoration: none;
+  }
+  .detalle__cabecera { display: grid; gap: var(--esp-4); align-items: center; }
+  @media (min-width: 900px) {
+    .detalle__cabecera { grid-template-columns: 1fr 1fr; gap: var(--esp-6); }
+  }
+  .detalle__imagen {
+    width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: contain;
+    border-radius: var(--radio-l); box-shadow: var(--sombra-2);
+    background: var(--color-superficie);
+  }
+  .detalle__imagen--vacia { display: grid; place-items: center; color: var(--color-texto-suave); }
+  .detalle__info { min-width: 0; }
+  .detalle__titulo { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--esp-3); }
+  .detalle__titulo h1 { margin: 0; overflow-wrap: anywhere; }
+  .detalle__guardar {
+    flex-shrink: 0; min-height: 44px; padding: 0 var(--esp-3);
+    border: 1px solid var(--color-marca-borde); border-radius: var(--radio-pildora);
+    background: var(--color-fondo); color: var(--color-texto);
+    font: inherit; font-weight: 600; cursor: pointer;
+  }
+  .detalle__datos { margin: var(--esp-4) 0 0; display: grid; gap: var(--esp-3); }
+  .detalle__datos div { display: grid; gap: var(--esp-1); }
+  .detalle__datos dt { font-size: var(--texto-s); color: var(--color-texto-suave); }
+  .detalle__datos dd { margin: 0; overflow-wrap: anywhere; }
+  .detalle__lugar { color: var(--color-texto-suave); }
+  .detalle__etiquetas { display: flex; flex-wrap: wrap; gap: var(--esp-2); margin-top: var(--esp-4); }
+</style>
