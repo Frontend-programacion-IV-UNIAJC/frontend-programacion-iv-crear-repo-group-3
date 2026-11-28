@@ -3,13 +3,13 @@
 //Rejilla de tarjetas de obra de arte: imagen, titulo, autor, periodo, tecnica.
 
 import Card from "./Card.astro";
-const { recetas } = Astro.props;
+const { obras=[] } = Astro.props;
 const base = import.meta.env.BASE_URL;
 ---
 <ul class="rejilla">
-  {recetas.map((receta:any) => (
+  {obras.map((obra:any) => (
     <li>
-      <Card receta={receta} />
+      <Card obra={obra} />
     </li>
   ))}
 </ul>

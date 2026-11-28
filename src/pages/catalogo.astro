@@ -7,8 +7,8 @@ import Paginacion from "../components/catalogo/Paginacion.astro";
 import { categorias, dificultades } from "../data/datos-de-prueba.js";
 import { obtenerObras } from "../services/api";
 
-const recetas = await obtenerObras();
-console.log(recetas[0]);
+const obras = await obtenerObras();
+console.log(obras[0]);
 ---
 
 <Layout
@@ -30,9 +30,9 @@ console.log(recetas[0]);
       <div class="catalogo__resultados">
         <BarraDeBusqueda />
         <p class="catalogo__conteo" role="status">
-          <strong>{recetas.length}</strong> recetas encontradas
+          <strong>{obras.length}</strong> obras encontradas
         </p>
-        <CardGrid recetas={recetas} />
+        <CardGrid obras={obras} />
         <Paginacion actual={1} total={3} />
       </div>
     </div>

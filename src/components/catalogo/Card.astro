@@ -2,13 +2,16 @@
 // Card.astro
 import Etiqueta from "../ui/Etiqueta.astro";
 
-const { receta } = Astro.props;
-const { id, nombre, categoria, area, imagen, minutos, dificultad } = receta;
+const { obra = {} } = Astro.props;
+const { id, nombre, artista, fecha, categoria, tecnica, imagen } = obra;
+
 const base = import.meta.env.BASE_URL;
 const baseLimpia = base.endsWith("/") ? base : `${base}/`;
+const imagenDefecto = `${baseLimpia}img/portada.svg`;
+
 const rutaImagen = imagen?.startsWith("http")
   ? imagen
-  : `${baseLimpia}${String(imagen ?? "").replace(/^\/+/, "")}`;
+  : `${baseLimpia}${String(imagen ?? "img/portada.svg").replace(/^\/+/, "")}`;
 ---
 
 <article class="tarjeta">
@@ -16,12 +19,12 @@ const rutaImagen = imagen?.startsWith("http")
     <img
       class="tarjeta__imagen"
       src={rutaImagen}
-      alt=""
+      alt={nombre ?? ""}
       width="400"
       height="300"
       loading="lazy"
+      onerror={`this.onerror=null;this.src='${imagenDefecto}';`}
     />
-    <span class="tarjeta__tiempo">{minutos} min</span>
     <button
       class="tarjeta__favorito"
       type="button"
@@ -50,10 +53,10 @@ const rutaImagen = imagen?.startsWith("http")
         {nombre}
       </a>
     </h2>
-    <p class="tarjeta__meta">{area}</p>
+    <p class="tarjeta__meta">{artista}{fecha ? ` · ${fecha}` : ""}</p>
     <div class="tarjeta__etiquetas">
-      <Etiqueta>{categoria}</Etiqueta>
-      <Etiqueta>{dificultad}</Etiqueta>
+      {categoria && <Etiqueta>{categoria}</Etiqueta>}
+      {tecnica && <Etiqueta>{tecnica}</Etiqueta>}
     </div>
   </div>
 </article>

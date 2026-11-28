@@ -3,13 +3,13 @@
 import { obras as obrasDePrueba } from "../data/datos-de-prueba.js";
 
 const API = "https://api.artic.edu/api/v1";
-const CAMPOS = "id,title,artist_display,classification_title,date_display,medium_display,image_id";
+const CAMPOS =
+  "id,title,artist_display,classification_title,date_display,medium_display,image_id";
 
-function construirUrlImagen(imageId, tamano = 843) {
+function construirUrlImagen(imageId, tamano = 600) {
   if (!imageId) return "img/portada.svg";
   return `https://www.artic.edu/iiif/2/${imageId}/full/${tamano},/0/default.jpg`;
 }
-
 function estimarSiglo(obraApi) {
   if (obraApi.date_display) return obraApi.date_display;
   return "Período no especificado (aprox.)";
@@ -18,31 +18,25 @@ function estimarSiglo(obraApi) {
 /**
  * @typedef {Object} Obra
  * @property {string} id
- * @property {string} titulo
- * @property {string} autor
+ * @property {string} nombre
+ * @property {string} artista
+ * @property {string} fecha
+ * @property {string} categoria
  * @property {string} tecnica
- * @property {string} periodo
- * @property {string} descripcionTecnica
  * @property {string} imagen
- * @property {string} imagenGrande
  */
 
 export function adaptarObra(item) {
-  const titulo = item.title?.trim() || "Título no disponible";
-  const autor = item.artist_display?.trim() || "Autor desconocido";
-  const tecnica = item.classification_title?.trim() || "Sin clasificar";
-  const periodo = estimarSiglo(item);
-  const descripcionTecnica = item.medium_display?.trim() || "Técnica no especificada";
+  const tieneImagen = Boolean(item.image_id);
 
   return {
     id: String(item.id),
-    titulo,
-    autor,
-    tecnica,
-    periodo,
-    descripcionTecnica,
-    imagen: construirUrlImagen(item.image_id, 600),
-    imagenGrande: construirUrlImagen(item.image_id, 843),
+    nombre: item.title?.trim() || "Obra sin título",
+    artista: item.artist_display?.trim() || "Autor desconocido",
+    fecha: item.date_display?.trim() || "Fecha no registrada",
+    categoria: item.classification_title?.trim() || "Obra",
+    tecnica: item.medium_display?.trim() || "",
+    imagen: tieneImagen ? `api/imagen/${item.image_id}` : "img/portada.svg",
   };
 }
 
@@ -67,7 +61,14 @@ export async function obtenerObras(limite = 12) {
 
     return datos.data.map(adaptarObra);
   } catch (error) {
-    console.warn(`[api] No se pudo leer Art Institute of Chicago (${error.message}). Uso los datos de prueba.`);
+    console.warn(
+      `[api] No se pudo leer Art Institute of Chicago (${error.message}). Uso los datos de prueba.`,
+    );
     return obrasDePrueba;
   }
+}
+export async function obtenerRecomendadas(cantidad = 3) {
+  const obras = await obtenerObras(12);
+  const conImagen = obras.filter((o) => o.imagen.startsWith("api/"));
+  return (conImagen.length ? conImagen : obras).slice(0, cantidad);
 }

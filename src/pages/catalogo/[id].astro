@@ -1,0 +1,75 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Etiqueta from "../../components/ui/Etiqueta.astro";
+import Boton from "../../components/ui/Boton.astro";
+import Estado from "../../components/ui/Estado.astro";
+import { obtenerObras } from "../../services/api.js";
+
+export async function getStaticPaths() {
+  const obras = await obtenerObras();
+  return obras.map((obra) => ({
+    params: { id: obra.id },
+    props: { obra },
+  }));
+}
+
+const { obra } = Astro.props;
+const { nombre, artista, fecha, categoria, tecnica, imagen } = obra;
+
+const base = import.meta.env.BASE_URL;
+const baseLimpia = base.endsWith("/") ? base : `${base}/`;
+const src = imagen.startsWith("http")
+  ? imagen
+  : `${baseLimpia}${imagen.replace(/^\/+/, "")}`;
+---
+<Layout
+  titulo={`${nombre} — Arte Abierto`}
+  descripcion={`${nombre}, de ${artista}. ${categoria}, ${fecha}.`}
+  activo="catalogo"
+>
+  <div class="contenedor detalle">
+    <a class="detalle__volver" href={`${baseLimpia}catalogo`}>
+      <span aria-hidden="true">‹</span> Volver al catálogo
+    </a>
+
+    <section class="detalle__cabecera">
+      <img class="detalle__imagen" src={src} alt={nombre} width="640" height="480" />
+
+      <div class="detalle__info">
+        <p class="rotulo">{categoria}</p>
+        <div class="detalle__titulo">
+          <h1>{nombre}</h1>
+          <button class="detalle__guardar" type="button" aria-pressed="false">
+            <span aria-hidden="true">♡</span> Guardar
+          </button>
+        </div>
+        <p>{artista}</p>
+        <div class="detalle__etiquetas">
+          <Etiqueta tono="marca">{fecha}</Etiqueta>
+          <Etiqueta>{categoria}</Etiqueta>
+        </div>
+      </div>
+    </section>
+
+    {tecnica ? (
+      <div class="detalle__cuerpo">
+        <section>
+          <h2>Técnica</h2>
+          <p>{tecnica}</p>
+        </section>
+      </div>
+    ) : (
+      <Estado
+        tipo="vacio"
+        titulo="Técnica no disponible"
+        mensaje="El museo no registró la técnica de esta obra."
+      />
+    )}
+
+    <div>
+      <Boton href={`${baseLimpia}catalogo`} variante="secundario">
+        Ver otras obras
+      </Boton>
+    </div>
+  </div>
+</Layout>
